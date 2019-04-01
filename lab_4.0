@@ -21,16 +21,16 @@ TEMP_LIST = []
 
 # Numbers and their corresponding binary code for representation on the display
 
-DIGIT_L = {0 : 0b00111111,
-           1 : 0b00110000,
-           2 : 0b01011011,
-           3 : 0b01001111,
-           4 : 0b01100110,
-           5 : 0b01101101,
-           6 : 0b01111101,
-           7 : 0b00000111,
-           8 : 0b01111111,
-           9 : 0b01100111}
+DIGIT_L = {'zero' : 0b00111111,
+           'one' : 0b00110000,
+           'two' : 0b01011011,
+           'three' : 0b01001111,
+           'four' : 0b01100110,
+           'five' : 0b01101101,
+           'six' : 0b01111101,
+           'seven' : 0b00000111,
+           'eight' : 0b01111111,
+           'nine' : 0b01100111}
 
 # configure_adc - task 9 -
 # Returns - nothing
@@ -92,7 +92,7 @@ def turn_on_display(bus):
 
 
 # display_data : lights up segments on specified digit location
-# PARAMS: bus - bus to write to, digit_index - specified index from DIGIT_L list, digits - 
+# PARAMS: bus - bus to write to, digit_index - specified index from DIGIT_L list, digits -
 def display_data(bus, segment_index, digit_location):
 
    segment = [segment_index]         # 1 in front to turn on decimal, 0 in front for off decimal
@@ -118,34 +118,41 @@ def temp_to_display(temp_list):
    for digit in TEMP_LIST:
 
       if( digit  == 0 ):
-         display_data(bus, DIGIT_L[0], 0x0)
+         display_data(bus, DIGIT_L['zero'], 'first')
 
       elif (digit == 1 ):
-         display_data(bus, DIGIT_L[1], 0x0)
+         display_data(bus, DIGIT_L['one'], 'first')
 
       elif (digit == 2 ):
-         display_data(bus, DIGIT_L[2], 0x0)
+         display_data(bus, DIGIT_L['two'], 'first')
 
       elif (digit == 3 ):
-         display_data(bus, DIGIT_L[3], 0x0)
+         display_data(bus, DIGIT_L['three'], 'first')
 
       elif (digit == 4 ):
-         display_data(bus, DIGIT_L[4], 0x0)
+         display_data(bus, DIGIT_L['four'], 'first')
 
       elif (digit == 5 ):
-         display_data(bus, DIGIT_L[5], 0x0)
+         display_data(bus, DIGIT_L['five'], 'first')
 
       elif (digit == 6 ):
-         display_data(bus, DIGIT_L[6], 0x0)
+
+
+         display_data(bus, DIGIT_L['six'], 'first')
+
+
 
       elif (digit == 7 ):
-         display_data(bus, DIGIT_L[7], 0x0)
+
+
+         display_data(bus, DIGIT_L['seven'], 'first')
+
 
       elif (digit == 8 ):
-         display_data(bus, DIGIT_L[8], 0x0)
+         display_data(bus, DIGIT_L['eight'], 'first')
 
       elif (digit == 9 ):
-         display_data(bus, DIGIT_L[9], 0x0)
+         display_data(bus, DIGIT_L['nine'], 'first')
 
 
 configure_adc(bus)
@@ -157,7 +164,7 @@ print(adc_reading)
 #if adc_reading >= 32768:
  # adc_reading = bin(0000000000000000)
 
-print(adc_reading)
+
 
 voltage_reading = convert_raw_reading(adc_reading)
 
@@ -165,6 +172,8 @@ temperature_read = convert_voltage_to_temp(voltage_reading, 10000)
 
 print(temperature_read)
 print(voltage_reading)
+
+
 
 create_list(temperature_read, 1)
 create_list(temperature_read, 0)
@@ -180,4 +189,7 @@ temp_to_display(TEMP_LIST)
 
 set_clock(bus)
 turn_on_display(bus)
+
+
+
 
