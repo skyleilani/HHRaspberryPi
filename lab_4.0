@@ -92,18 +92,20 @@ def turn_on_display(bus):
 
 
 # display_data : lights up segments on specified digit location
-def display_data(bus, DIGIT_INDEX, digits):
+# PARAMS: bus - bus to write to, digit_index - specified index from DIGIT_L list, digits - 
+def display_data(bus, segment_index, digit_location):
 
-   digit = [DIGIT_INDEX]         # 1 in front to turn on decimal, 0 in front for off decimal
-   bus.write_i2c_block_data(LED_DISP_ADDRESS, DISPLAY_BYTES[digits], digit)
+   segment = [segment_index]         # 1 in front to turn on decimal, 0 in front for off decimal
+   bus.write_i2c_block_data(LED_DISP_ADDRESS, DISPLAY_BYTES[digit_location], segment)
 
 
 # create_list : adds specified digit from a larger integer to temp_list (also rounds the number to the hundredth to keep it 4 digits long)
 #
 # PARAMS :number = the larger integer; exponent = 1 for tens place, 0 for ones place, -1 for tenths, -2 for hundredths
 def create_list(number, exponent):
-   round(number, 2)
-   digit = number // 10**exponent % 10
+   float_number = float(number)
+   rounded_num = round(float_number, 2)
+   digit = rounded_num // 10**exponent % 10
 
    TEMP_LIST.append(digit)
 
@@ -112,38 +114,38 @@ def create_list(number, exponent):
 # PARAMS : the temperature read from convert_voltage_to_temp
 def temp_to_display(temp_list):
 
-   for location in DISPLAY_BYTES.values():
-      for digit in TEMP_LIST:
+   #for location in DISPLAY_BYTES.values():
+   for digit in TEMP_LIST:
 
-         if( digit  == 0 ):
-            display_data(bus, DIGIT_L[0], location)
+      if( digit  == 0 ):
+         display_data(bus, DIGIT_L[0], 0x0)
 
-         elif (digit == 1 ):
-            display_data(bus, DIGIT_L[1], location)
+      elif (digit == 1 ):
+         display_data(bus, DIGIT_L[1], 0x0)
 
-         elif (digit == 2 ):
-            display_data(bus, DIGIT_L[2], location)
+      elif (digit == 2 ):
+         display_data(bus, DIGIT_L[2], 0x0)
 
-         elif (digit == 3 ):
-            display_data(bus, DIGIT_L[3], location)
+      elif (digit == 3 ):
+         display_data(bus, DIGIT_L[3], 0x0)
 
-         elif (digit == 4 ):
-            display_data(bus, DIGIT_L[4], location)
+      elif (digit == 4 ):
+         display_data(bus, DIGIT_L[4], 0x0)
 
-         elif (digit == 5 ):
-            display_data(bus, DIGIT_L[5], location)
+      elif (digit == 5 ):
+         display_data(bus, DIGIT_L[5], 0x0)
 
-         elif (digit == 6 ):
-            display_data(bus, DIGIT_L[6], location)
+      elif (digit == 6 ):
+         display_data(bus, DIGIT_L[6], 0x0)
 
-         elif (digit == 7 ):
-            display_data(bus, DIGIT_L[7], location)
+      elif (digit == 7 ):
+         display_data(bus, DIGIT_L[7], 0x0)
 
-         elif (digit == 8 ):
-            display_data(bus, DIGIT_L[8], location)
+      elif (digit == 8 ):
+         display_data(bus, DIGIT_L[8], 0x0)
 
-         elif (digit == 9 ):
-            display_data(bus, DIGIT_L[9], location)
+      elif (digit == 9 ):
+         display_data(bus, DIGIT_L[9], 0x0)
 
 
 configure_adc(bus)
@@ -152,8 +154,8 @@ adc_reading = get_raw_adc_reading(bus)
 
 print(adc_reading)
 
-if adc_reading >= 32768:
-  adc_reading = bin(0000000000000000)
+#if adc_reading >= 32768:
+ # adc_reading = bin(0000000000000000)
 
 print(adc_reading)
 
