@@ -10,17 +10,14 @@ CONFIG_REGISTER = 0x01
 CONVERSION_REGISTER = 0x00
 
 
-SYSTEM_SETUP = 0x70   # system setup register - enables clock
-
-DISPLAY_DATA = 0x21  # display data address pointer - allows loading of individual display data byte, or a series,
-                        # into any location of the display sequence commences with the initialization of the address pointer
-
+LED_DISP_ADDRESS = 0x70   # device address of 7 segment display
 DISPLAY_SETUP = 0x81    # turns LED display ON and sets blinking frequency to {0,0}
+CLOCK_SETUP = 0x21  # sets clock to ON
 
-DISPLAY_ADDRESS = 0x0      # (IS THIS KEY DATA ADDR POINTER??) 0x00 for 1st digit, 0x02 for 2nd digit, 0x04 for colon, 0x06 for 3rd digit, 0x08 for 4th digit
-
+DISPLAY_ADDRESS = 0x0      # 0x00 for 1st digit, 0x02 for 2nd digit, 0x04 for colon, 0x06 for 3rd digit, 0x08 for 4th digit
 DISPLAY_BYTES = {'first' : 0x0, 'second' : 0x02, 'third' : 0x06, 'fourth' : 0x08}
 
+TEMP_LIST = []
 
 # Numbers and their corresponding binary code for representation on the display
 
@@ -85,69 +82,80 @@ def convert_voltage_to_temp(voltage, resistor):
 
 def set_clock(bus):
 
-   bus.write_byte(SYSTEM_SETUP, DISPLAY_DATA)
+   bus.write_byte(LED_DISP_ADDRESS, CLOCK_SETUP)
 
 
 # turn_on_display : turns our display on
 def turn_on_display(bus):
 
-   bus.write_byte(SYSTEM_SETUP, DISPLAY_SETUP)
+   bus.write_byte(LED_DISP_ADDRESS, DISPLAY_SETUP)
 
 
 # display_data : lights up segments on specified digit location
 def display_data(bus, DIGIT_INDEX, digits):
 
    digit = [DIGIT_INDEX]         # 1 in front to turn on decimal, 0 in front for off decimal
-   bus.write_i2c_block_data(SYSTEM_SETUP, DISPLAY_BYTES[digits], digit)
-
-def temp_to_display(temperature_read):
-   string_read = str(temperature_read)
-
-   
-   for x in string_read[0:5]:
-       print(string_read[0:5]
-       for i in DISPLAY_BYTES:
-            
-
-            if (x == '0'):
-
-                display_data(bus, DIGIT_L[0], i)
+   bus.write_i2c_block_data(LED_DISP_ADDRESS, DISPLAY_BYTES[digits], digit)
 
 
-            elif (x == '1'):
-                display_data(bus, DIGIT_L[1], i)
+# create_list : adds specified digit from a larger integer to temp_list (also rounds the number to the hundredth to keep it 4 digits long)
+#
+# PARAMS :number = the larger integer; exponent = 1 for tens place, 0 for ones place, -1 for tenths, -2 for hundredths
+def create_list(number, exponent):
+   round(number, 2)
+   digit = number // 10**exponent % 10
+
+   TEMP_LIST.append(digit)
 
 
-            elif(x == '2'):
-                display_data(bus, DIGIT_L[2], i)
+# temp_to_display : takes temperature read and prints it to LED display
+# PARAMS : the temperature read from convert_voltage_to_temp
+def temp_to_display(temp_list):
 
-            elif(x == '3'):
-                display_data(bus, DIGIT_L[3], i)
+   for location in DISPLAY_BYTES.values():
+      for digit in TEMP_LIST:
 
-            elif (x == '4'):
-                display_data(bus, DIGIT_L[4], i)
+         if( digit  == 0 ):
+            display_data(bus, DIGIT_L[0], location)
 
-            elif(x == '5'):
-                display_data(bus, DIGIT_L[5], i)
+         elif (digit == 1 ):
+            display_data(bus, DIGIT_L[1], location)
 
-            elif(x == '6'):
-                display_data(bus, DIGIT_L[6], i)
+         elif (digit == 2 ):
+            display_data(bus, DIGIT_L[2], location)
 
-            elif(x == '7'):
-                display_data(bus, DIGIT_L[7], i)
+         elif (digit == 3 ):
+            display_data(bus, DIGIT_L[3], location)
 
-            elif (x == '8'):
-                display_data(bus, DIGIT_L[8], i)
+         elif (digit == 4 ):
+            display_data(bus, DIGIT_L[4], location)
 
-            elif(x == '9'):
-                display_data(bus, DIGIT_L[9], i)
+         elif (digit == 5 ):
+            display_data(bus, DIGIT_L[5], location)
 
-     
+         elif (digit == 6 ):
+            display_data(bus, DIGIT_L[6], location)
+
+         elif (digit == 7 ):
+            display_data(bus, DIGIT_L[7], location)
+
+         elif (digit == 8 ):
+            display_data(bus, DIGIT_L[8], location)
+
+         elif (digit == 9 ):
+            display_data(bus, DIGIT_L[9], location)
+
 
 configure_adc(bus)
-
-
 adc_reading = get_raw_adc_reading(bus)
+
+
+print(adc_reading)
+
+if adc_reading >= 32768:
+  adc_reading = bin(0000000000000000)
+
+print(adc_reading)
 
 voltage_reading = convert_raw_reading(adc_reading)
 
@@ -156,11 +164,18 @@ temperature_read = convert_voltage_to_temp(voltage_reading, 10000)
 print(temperature_read)
 print(voltage_reading)
 
-temp_to_display(temperature_read)
+create_list(temperature_read, 1)
+create_list(temperature_read, 0)
+create_list(temperature_read, -1)
+create_list(temperature_read, 2)
 
-if bin(adc_reading) >= bin(32768):
-  adc_reading = bin(0000000000000000)
+
+print(adc_reading)
+
+temp_to_display(TEMP_LIST)
+
 
 
 set_clock(bus)
 turn_on_display(bus)
+
