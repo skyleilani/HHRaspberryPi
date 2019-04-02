@@ -4,11 +4,9 @@ import time
 
 bus = smbus.SMBus(1) # connects to i2C channel 1 and GPIO i2C pins
 
-
 DEVICE_ADDRESS = 0x48 # The address of the i2c device in hex without the r/w bit
 CONFIG_REGISTER = 0x01
 CONVERSION_REGISTER = 0x00
-
 
 LED_DISP_ADDRESS = 0x70   # device address of 7 segment display
 DISPLAY_SETUP = 0x81    # turns LED display ON and sets blinking frequency to {0,0}
