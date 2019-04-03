@@ -13,7 +13,10 @@ DISPLAY_SETUP = 0x81    # turns LED display ON and sets blinking frequency to {0
 CLOCK_SETUP = 0x21  # sets clock to ON
 
 DISPLAY_ADDRESS = 0x0      # 0x00 for 1st digit, 0x02 for 2nd digit, 0x04 for colon, 0x06 for 3rd digit, 0x08 for 4th digit
-DISPLAY_BYTES = {'first' : 0x0, 'second' : 0x02, 'third' : 0x06, 'fourth' : 0x08}
+DISPLAY_BYTES = {'first' : 0x0, 
+                 'second' : 0x02, 
+                 'third' : 0x06, 
+                 'fourth' : 0x08}
 
 TEMP_LIST = []
 
@@ -108,56 +111,231 @@ def create_list(number, exponent):
    TEMP_LIST.append(digit)
 
 
-# temp_to_display : takes temperature read and prints it to LED display
-# PARAMS : the temperature read from convert_voltage_to_temp
-def temp_to_display(temp_list):
+# temp_to_display_0 : takes temperature read and prints it to LED display's FIRST DIGIT 
+# PARAMS : the temp_list given from create_list
+def temp_to_display_0(list):
 
-   #for location in DISPLAY_BYTES.values():
-   for digit in TEMP_LIST:
+      if( list[0]  == 0 ):
+         segment0 = [DIGIT_L['zero']]
+         ad_1 = DISPLAY_BYTES['first']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment0)
+        
+      elif (list[0] == 1 ):
+         segment1 = [DIGIT_L['one']]
+         ad_1 = DISPLAY_BYTES['first']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment1)
+        
 
-      if( digit  == 0 ):
-         display_data(bus, DIGIT_L['zero'], 'first')
+      elif (list[0] == 2 ):
+         segment2 = [DIGIT_L['two']]
+         ad_1 = DISPLAY_BYTES['first']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment2)
 
-      elif (digit == 1 ):
-         display_data(bus, DIGIT_L['one'], 'first')
+      elif (list[0] == 3 ):
+         segment3 = [DIGIT_L['three']]
+         ad_1 = DISPLAY_BYTES['first']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment3)
 
-      elif (digit == 2 ):
-         display_data(bus, DIGIT_L['two'], 'first')
+      elif (list[1] == 4 ):
+         segment4 = [DIGIT_L['four']]
+         ad_1 = DISPLAY_BYTES['first']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment4)
+         
+      elif (list[0]  == 5 ):
+         segment5 = [DIGIT_L['five']]
+         ad_1 = DISPLAY_BYTES['first']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment5)
 
-      elif (digit == 3 ):
-         display_data(bus, DIGIT_L['three'], 'first')
+      elif (list[0]  == 6 ):
+         segment6 = [DIGIT_L['six']]
+         ad_1 = DISPLAY_BYTES['first']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment6)
 
-      elif (digit == 4 ):
-         display_data(bus, DIGIT_L['four'], 'first')
+      elif (list[0]  == 7 ):
+         segment7 = [DIGIT_L['seven']]
+         ad_1 = DISPLAY_BYTES['first']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment7)
+         
+      elif (list[0]  == 8 ):
+         segment8 = [DIGIT_L['eight']]
+         ad_1 = DISPLAY_BYTES['first']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment8)
 
-      elif (digit == 5 ):
-         display_data(bus, DIGIT_L['five'], 'first')
+      elif (list[0]  == 9 ):
+         segment9 = [DIGIT_L['nine']]
+         ad_1 = DISPLAY_BYTES['first']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment9)
+         
+# temp_to_display_1 : takes temperature read and prints it to LED display's SECOND DIGIT 
+# PARAMS : the temp_list given from create_list
+def temp_to_display_1(list):
 
-      elif (digit == 6 ):
+      if( list[1]  == 0 ):
+         segment0 = [0b10111111]
+         ad_1 = DISPLAY_BYTES['second']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment0)
+        
+      elif (list[1] == 1 ):
+         segment1 = [0b10110000]
+         ad_1 = DISPLAY_BYTES['second']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment1)
+        
 
+      elif (list[1] == 2 ):
+         segment2 = [0b11011011]
+         ad_1 = DISPLAY_BYTES['second']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment2)
 
-         display_data(bus, DIGIT_L['six'], 'first')
+      elif (list[1] == 3 ):
+         segment3 = [0b11001111]
+         ad_1 = DISPLAY_BYTES['second']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment3)
 
+      elif (list[1] == 4 ):
+         segment4 = [0b11100110]
+         ad_1 = DISPLAY_BYTES['second']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment4)
+         
+      elif (list[1]  == 5 ):
+         segment5 = [0b11101101]
+         ad_1 = DISPLAY_BYTES['second']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment5)
 
+      elif (list[1] == 6 ):
+         segment6 = [0b11111101]
+         ad_1 = DISPLAY_BYTES['second']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment6)
 
-      elif (digit == 7 ):
+      elif (list[1]  == 7 ):
+         segment7 = [0b10000111]
+         ad_1 = DISPLAY_BYTES['second']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment7)
+         
+      elif (list[1]  == 8 ):
+         segment8 = [0b11111111]
+         ad_1 = DISPLAY_BYTES['second']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment8)
 
+      elif (list[1]  == 9 ):
+         segment9 = [0b11100111]
+         ad_1 = DISPLAY_BYTES['second']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment9)
 
-         display_data(bus, DIGIT_L['seven'], 'first')
+# temp_to_display_2 : takes temperature read and prints it to LED display's THIRD DIGIT 
+# PARAMS : the temp_list given from create_list
+def temp_to_display_2(list):
 
+      if( list[2]  == 0 ):
+         segment0 = [DIGIT_L['zero']]
+         ad_1 = DISPLAY_BYTES['third']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment0)
+        
+      elif (list[2] == 1 ):
+         segment1 = [DIGIT_L['one']]
+         ad_1 = DISPLAY_BYTES['third']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment1)
+        
 
-      elif (digit == 8 ):
-         display_data(bus, DIGIT_L['eight'], 'first')
+      elif (list[2] == 2 ):
+         segment2 = [DIGIT_L['two']]
+         ad_1 = DISPLAY_BYTES['third']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment2)
 
-      elif (digit == 9 ):
-         display_data(bus, DIGIT_L['nine'], 'first')
+      elif (list[2] == 3 ):
+         segment3 = [DIGIT_L['three']]
+         ad_1 = DISPLAY_BYTES['third']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment3)
 
+      elif (list[2] == 4 ):
+         segment4 = [DIGIT_L['four']]
+         ad_1 = DISPLAY_BYTES['third']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment4)
+         
+      elif (list[2]  == 5 ):
+         segment5 = [DIGIT_L['five']]
+         ad_1 = DISPLAY_BYTES['third']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment5)
 
+      elif (list[2] == 6 ):
+         segment6 = [DIGIT_L['six']]
+         ad_1 = DISPLAY_BYTES['third']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment6)
+
+      elif (list[2]  == 7 ):
+         segment7 = [DIGIT_L['seven']]
+         ad_1 = DISPLAY_BYTES['third']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment7)
+         
+      elif (list[2]  == 8 ):
+         segment8 = [DIGIT_L['eight']]
+         ad_1 = DISPLAY_BYTES['third']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment8)
+
+      elif (list[2]  == 9 ):
+         segment9 = [DIGIT_L['nine']]
+         ad_1 = DISPLAY_BYTES['third']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment9)
+         
+# temp_to_display_3 : takes temperature read and prints it to LED display's FOURTH DIGIT 
+# PARAMS : the temp_list given from create_list
+def temp_to_display_3(list):
+
+      if( list[3]  == 0 ):
+         segment0 = [DIGIT_L['zero']]
+         ad_1 = DISPLAY_BYTES['third']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment0)
+        
+      elif (list[3] == 1 ):
+         segment1 = [DIGIT_L['one']]
+         ad_1 = DISPLAY_BYTES['third']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment1)
+        
+
+      elif (list[3] == 2 ):
+         segment2 = [DIGIT_L['two']]
+         ad_1 = DISPLAY_BYTES['third']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment2)
+
+      elif (list[3] == 3 ):
+         segment3 = [DIGIT_L['three']]
+         ad_1 = DISPLAY_BYTES['third']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment3)
+
+      elif (list[3] == 4 ):
+         segment4 = [DIGIT_L['four']]
+         ad_1 = DISPLAY_BYTES['third']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment4)
+         
+      elif (list[3]  == 5 ):
+         segment5 = [DIGIT_L['five']]
+         ad_1 = DISPLAY_BYTES['third']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment5)
+
+      elif (list[3] == 6 ):
+         segment6 = [DIGIT_L['six']]
+         ad_1 = DISPLAY_BYTES['third']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment6)
+
+      elif (list[3] == 7 ):
+         segment7 = [DIGIT_L['seven']]
+         ad_1 = DISPLAY_BYTES['third']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment7)
+         
+      elif (list[3]  == 8 ):
+         segment8 = [DIGIT_L['eight']]
+         ad_1 = DISPLAY_BYTES['third']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment8)
+
+      elif (list[3] == 9 ):
+         segment9 = [DIGIT_L['nine']]
+         ad_1 = DISPLAY_BYTES['third']
+         bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment9)      
+         
 configure_adc(bus)
 adc_reading = get_raw_adc_reading(bus)
 
 
-print(adc_reading)
+
 
 #if adc_reading >= 32768:
  # adc_reading = bin(0000000000000000)
@@ -171,17 +349,16 @@ temperature_read = convert_voltage_to_temp(voltage_reading, 10000)
 print(temperature_read)
 print(voltage_reading)
 
-
-
 create_list(temperature_read, 1)
 create_list(temperature_read, 0)
 create_list(temperature_read, -1)
 create_list(temperature_read, 2)
 
 
-print(adc_reading)
-
-temp_to_display(TEMP_LIST)
+temp_to_display_0(TEMP_LIST)
+temp_to_display_1(TEMP_LIST)
+temp_to_display_2(TEMP_LIST)
+temp_to_display_3(TEMP_LIST)
 
 
 
