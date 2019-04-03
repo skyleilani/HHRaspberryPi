@@ -1,3 +1,12 @@
+#!/usr/bin/python3
+#
+# Josie Bunnell (josephinebunnell@bennington.edu) ; Sky Leilani (skyleilani@bennington.edu)
+#
+# Date Created: 3.27.19
+#
+# Hardware Hacking
+#
+
 import smbus
 import RPi.GPIO as GPIO
 import time
@@ -136,7 +145,7 @@ def temp_to_display_0(list):
          ad_1 = DISPLAY_BYTES['first']
          bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment3)
 
-      elif (list[1] == 4 ):
+      elif (list[0] == 4 ):
          segment4 = [DIGIT_L['four']]
          ad_1 = DISPLAY_BYTES['first']
          bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment4)
@@ -282,28 +291,28 @@ def temp_to_display_3(list):
 
       if( list[3]  == 0 ):
          segment0 = [DIGIT_L['zero']]
-         ad_1 = DISPLAY_BYTES['third']
+         ad_1 = DISPLAY_BYTES['fourth']
          bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment0)
         
       elif (list[3] == 1 ):
          segment1 = [DIGIT_L['one']]
-         ad_1 = DISPLAY_BYTES['third']
+         ad_1 = DISPLAY_BYTES['fourth']
          bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment1)
         
 
       elif (list[3] == 2 ):
          segment2 = [DIGIT_L['two']]
-         ad_1 = DISPLAY_BYTES['third']
+         ad_1 = DISPLAY_BYTES['fourth']
          bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment2)
 
       elif (list[3] == 3 ):
          segment3 = [DIGIT_L['three']]
-         ad_1 = DISPLAY_BYTES['third']
+         ad_1 = DISPLAY_BYTES['fourth']
          bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment3)
 
       elif (list[3] == 4 ):
          segment4 = [DIGIT_L['four']]
-         ad_1 = DISPLAY_BYTES['third']
+         ad_1 = DISPLAY_BYTES['fourth']
          bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment4)
          
       elif (list[3]  == 5 ):
@@ -313,58 +322,64 @@ def temp_to_display_3(list):
 
       elif (list[3] == 6 ):
          segment6 = [DIGIT_L['six']]
-         ad_1 = DISPLAY_BYTES['third']
+         ad_1 = DISPLAY_BYTES['fourth']
          bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment6)
 
       elif (list[3] == 7 ):
          segment7 = [DIGIT_L['seven']]
-         ad_1 = DISPLAY_BYTES['third']
+         ad_1 = DISPLAY_BYTES['fourth']
          bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment7)
          
       elif (list[3]  == 8 ):
          segment8 = [DIGIT_L['eight']]
-         ad_1 = DISPLAY_BYTES['third']
+         ad_1 = DISPLAY_BYTES['fourth']
          bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment8)
 
       elif (list[3] == 9 ):
          segment9 = [DIGIT_L['nine']]
-         ad_1 = DISPLAY_BYTES['third']
+         ad_1 = DISPLAY_BYTES['fourth']
          bus.write_i2c_block_data(LED_DISP_ADDRESS, ad_1 , segment9)      
-         
+
+
 configure_adc(bus)
-adc_reading = get_raw_adc_reading(bus)
+
+while True:
+
+  adc_reading = get_raw_adc_reading(bus)
 
 
 
-
-#if adc_reading >= 32768:
- # adc_reading = bin(0000000000000000)
-
-
-
-voltage_reading = convert_raw_reading(adc_reading)
-
-temperature_read = convert_voltage_to_temp(voltage_reading, 10000)
-
-print(temperature_read)
-print(voltage_reading)
-
-create_list(temperature_read, 1)
-create_list(temperature_read, 0)
-create_list(temperature_read, -1)
-create_list(temperature_read, 2)
-
-
-temp_to_display_0(TEMP_LIST)
-temp_to_display_1(TEMP_LIST)
-temp_to_display_2(TEMP_LIST)
-temp_to_display_3(TEMP_LIST)
+   #if adc_reading >= 32768:
+   # adc_reading = bin(0000000000000000)
 
 
 
-set_clock(bus)
-turn_on_display(bus)
+  voltage_reading = convert_raw_reading(adc_reading)
+
+  temperature_read = convert_voltage_to_temp(voltage_reading, 10000)
+  
+  create_list(temperature_read, 1)
+  create_list(temperature_read, 0)
+  create_list(temperature_read, -1)
+  create_list(temperature_read, -2)
+
+
+  temp_to_display_0(TEMP_LIST)
+  temp_to_display_1(TEMP_LIST)
+  temp_to_display_2(TEMP_LIST)
+  temp_to_display_3(TEMP_LIST)
+  
+  TEMP_LIST = []
+
+  print("Temperature is " + str(temperature_read) + "° Fahrenheit")
+  
+  time.sleep(5.0)
+  
+  
+
+  
 
 
 
-
+  set_clock(bus)
+  turn_on_display(bus)
