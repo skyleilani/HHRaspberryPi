@@ -1,12 +1,3 @@
-#!/usr/bin/python3
-#
-# Josie Bunnell (josephinebunnell@bennington.edu) ; Sky Leilani (skyleilani@bennington.edu)
-#
-# Date Created: 3.27.19
-#
-# Hardware Hacking
-#
-
 import smbus
 import RPi.GPIO as GPIO
 import time
